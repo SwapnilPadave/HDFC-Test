@@ -1,6 +1,7 @@
 ﻿using MachinTestForHDFC.Database;
 using MachinTestForHDFC.Dtos;
 using MachinTestForHDFC.Models.Employee;
+using MachinTestForHDFC.ResponseModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace MachinTestForHDFC.Services
@@ -23,8 +24,16 @@ namespace MachinTestForHDFC.Services
             return await _context.Employees.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Employees> CreateEmployeeAsync(CreateEmployeeRequestDto request)
+        public async Task<ServiceResult> CreateEmployeeAsync(CreateEmployeeRequestDto request)
         {
+            var result = new ServiceResult();
+            var isExists = await _context.Employees.AnyAsync(x => x.EmpCode == request.EmpCode);
+            if (isExists)
+                result.Errors.Add(("EmpCode", "Employee Code already exists."));
+
+            if (result.Errors.Any())
+                return result;
+
             var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
@@ -55,12 +64,15 @@ namespace MachinTestForHDFC.Services
                 await _context.EmployeeTaxCalculationDetails.AddAsync(employeeTaxCalculation);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-                return employee;
+                return result;
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw new Exception("Error creating employee: " + ex.Message);
+                return new ServiceResult
+                {
+                    Errors = new List<(string Field, string Message)> { ("", "Error while creating employee: " + ex.Message) }
+                };
             }
         }
 
@@ -74,6 +86,11 @@ namespace MachinTestForHDFC.Services
                 {
                     throw new Exception("Employee not found");
                 }
+
+                var isDuplicate = await _context.Employees.AnyAsync(x => x.EmpCode == request.EmpCode && x.Id != id);
+                if (isDuplicate)
+                    throw new Exception("Employee code already exists.");
+
                 var employeeTaxDetails = await _context.EmployeeTaxCalculationDetails
                     .FirstOrDefaultAsync(x => x.EmployeeId == id);
 
@@ -123,6 +140,12 @@ namespace MachinTestForHDFC.Services
         {
             var result = CalculateSalaryTax(salary);
             return result;
+        }
+
+        public async Task<bool> CheckDuplicateEmpCodeAsync(int empCode, int? id)
+        {
+            var isExists = await _context.Employees.AnyAsync(x => x.EmpCode == empCode || x.Id != id);
+            return isExists;
         }
 
         private decimal CalculateSalaryTax(decimal salary)

@@ -1,4 +1,5 @@
-﻿using MachinTestForHDFC.Models.Employee;
+﻿using MachinTestForHDFC.Models.Department;
+using MachinTestForHDFC.Models.Employee;
 using Microsoft.EntityFrameworkCore;
 
 namespace MachinTestForHDFC.Database
@@ -10,5 +11,6 @@ namespace MachinTestForHDFC.Database
         }
         public DbSet<Employees> Employees { get; set; }
         public DbSet<EmployeeTaxCalculationDetails> EmployeeTaxCalculationDetails { get; set; }
+        public DbSet<Departments> Departments { get; set; }
     }
 }

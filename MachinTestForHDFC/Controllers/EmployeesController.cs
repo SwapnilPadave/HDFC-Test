@@ -45,6 +45,14 @@ namespace MachinTestForHDFC.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _employeeService.CreateEmployeeAsync(requestDto);
+                if (!result.IsSuccess)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Field, error.Message);
+                    }
+                    return View(requestDto);
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(requestDto);
@@ -84,6 +92,13 @@ namespace MachinTestForHDFC.Controllers
         {
             var code = await _employeeService.GenerateEmployeeCodeAsync();
             return Json(code);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CheckDuplicateEmpCode(int empCode, int? id)
+        {
+            var result = await _employeeService.CheckDuplicateEmpCodeAsync(empCode, id);
+            return Json(result);
         }
     }
 }

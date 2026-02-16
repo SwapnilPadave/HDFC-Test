@@ -20,11 +20,13 @@
             <div class="form-group">
                 <label asp-for="EmpCode" class="control-label"></label>
                 <input asp-for="EmpCode" id="EmpCode" class="form-control" />
+                <span asp-validation-for="EmpCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DepartmentId" class="control-label"></label>
-                <input asp-for="DepartmentId" class="form-control" />
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                <select id="DepartmentId" name="DepartmentId" class="form-control">
+                    <option value="">---Select Department---</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Salary" class="control-label"></label>
@@ -59,39 +61,10 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $("#btnCalculateTax").click(function () {
-
-        var salary = $("#Salary").val();
-
-        if (salary <= 0) {
-            alert("Enter valid salary");
-            return;
-        }
-
-        $.ajax({
-            url: '/Employees/CalculateTax',
-            type: 'POST',
-            data: { salary: salary },
-            success: function (data) {
-                $("#taxResult").text(data);
-            },
-            error: function () {
-                alert("Error calculating tax");
-            }
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function(){
-        $.get('/Employees/GenerateEmpCode', function (data){
-            $("#EmpCode").val(data);
-        });
-    });
-</script>
-
 @section Scripts {
+
+    <script src="~/js/employees/createEmployeeForm.js" asp-append-version="true"></script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

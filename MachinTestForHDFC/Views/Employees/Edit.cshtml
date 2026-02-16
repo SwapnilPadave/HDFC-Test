@@ -12,6 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" id="Id" />
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
                 <input asp-for="FullName" class="form-control" />
@@ -24,8 +25,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="DepartmentId" class="control-label"></label>
-                <input asp-for="DepartmentId" class="form-control" />
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                <select id="DepartmentId" name="DepartmentId" data-selected = "@Model.DepartmentId" class="form-control">
+                    <option value="">---Select Department---</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Salary" class="control-label"></label>
@@ -61,7 +63,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
+@* <script>
     $("#btnCalculateTax").click(function () {
 
         var salary = $("#Salary").val();
@@ -83,8 +85,12 @@
             }
         });
     });
-</script>
+</script> *@
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/employees/updateEmployeeForm.js" asp-append-version="true"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
