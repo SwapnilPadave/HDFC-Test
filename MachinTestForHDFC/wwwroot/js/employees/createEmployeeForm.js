@@ -1,13 +1,40 @@
 ﻿$(document).ready(function () {
 
     let isDuplicate = false;
+
     //Generate employee code.
     $.get('/Employees/GenerateEmpCode', function (data) {
         $("#EmpCode").val(data);
     });
 
-    loadDropdown();
+    //Load dropdowns
+    loadDepartmentDropdown();
+    loadCountryDropdown();
 
+    //Load states by country change
+    $("#CountryId").change(function () {
+        var countryId = $(this).val();
+
+        $("#StateId").empty().append('<option value="">--Select State--</option>');
+        $("#CityId").empty().append('<option value="">--Select City--</option>');
+
+        if (countryId) {
+            loadStateDropdown(countryId);
+        }
+    });
+
+    //Load cities by state change
+    $("#StateId").change(function () {
+        var stateId = $(this).val();
+
+        $("#CityId").empty().append('<option value="">--Select City--</option>');
+
+        if (stateId) {
+            loadCityDropdown(stateId);
+        }
+    });
+
+    //Validation to check duplicate empcode
     $("#EmpCode").on("blur", function () {
         var empCode = $(this).val();
         if (empCode === "")
@@ -33,6 +60,7 @@
         });
     });
 
+    //form submit validation function
     $("form").submit(function (e) {
         if (isDuplicate) {
             e.preventDefault();
@@ -87,9 +115,8 @@
     //    }
     //});
 
-    //Calculate tax on salary.
-
     $("#btnCalculateTax").click(function () {
+    //Calculate tax on salary.
         var salary = $("#Salary").val();
 
         if (salary <= 0) {
@@ -110,7 +137,8 @@
     });
 });
 
-function loadDropdown() {
+//function to load department dropdown
+function loadDepartmentDropdown() {
     $.ajax({
         url: '/Department/GetAllDepartments',
         type: 'GET',
@@ -128,6 +156,55 @@ function loadDropdown() {
             console.log("Error loading departments: " + err);
         }
     })
+}
+
+//function to load country dropdown
+function loadCountryDropdown() {
+    $.ajax({
+        url: '/CountryStateCity/GetAllCountries',
+        type: 'GET',
+        success: function (data) {
+            var dropdown = $("#CountryId");
+            dropdown.empty();
+
+            dropdown.append('<option value="">--Select Country--</option>');
+
+            $.each(data, function (index, country) {
+                dropdown.append('<option value="' + country.id + '">' + country.countryName + '</option>');
+            });
+        },
+        error: function (err) {
+            console.log("Error loading countries: " + err);
+        }
+    })
+}
+
+//function to load state dropdown
+function loadStateDropdown(countryId) {
+    $.get('/CountryStateCity/GetAllStateByCountryId', { countryId: countryId }, function (data) {
+        $.each(data, function (i, item) {
+            $("#StateId").append(
+                $('<option>', {
+                    value: item.id,
+                    text: item.stateName
+                })
+            );
+        });
+    });
+}
+
+//function to load city dropdown
+function loadCityDropdown(stateId) {
+    $.get('/CountryStateCity/GetAllCityByStateId', { stateId: stateId }, function (data) {
+        $.each(data, function (i, item) {
+            $("#CityId").append(
+                $('<option>', {
+                    value: item.id,
+                    text: item.cityName
+                })
+            );
+        });
+    });
 }
 
 //function checkDuplicateEmpCode(empCode, id) {

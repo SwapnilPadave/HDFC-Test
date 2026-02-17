@@ -1,6 +1,7 @@
 using MachinTestForHDFC.Database;
-using MachinTestForHDFC.Services;
+using MachinTestForHDFC.Services.CountryStateCity;
 using MachinTestForHDFC.Services.Department;
+using MachinTestForHDFC.Services.Employee;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<TestDbContext>(options =>
 
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 builder.Services.AddTransient<IDepartmentService, DepartmentService>();
+builder.Services.AddTransient<ICountryStateCityService, CountryStateCityService>();
 
 var app = builder.Build();
 

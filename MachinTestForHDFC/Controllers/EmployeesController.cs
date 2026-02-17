@@ -1,6 +1,6 @@
 ﻿using MachinTestForHDFC.Database;
 using MachinTestForHDFC.Dtos;
-using MachinTestForHDFC.Services;
+using MachinTestForHDFC.Services.Employee;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MachinTestForHDFC.Controllers
@@ -75,6 +75,14 @@ namespace MachinTestForHDFC.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _employeeService.UpdateEmployeeAsync(id, employees);
+                if (!result.IsSuccess)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Field, error.Message);
+                    }
+                    return View(employees);
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(employees);
