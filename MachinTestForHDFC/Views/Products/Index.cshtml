@@ -1,0 +1,126 @@
+﻿@model IEnumerable<MachinTestForHDFC.Dto.ProductDto.GetAllProductsDetailsDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" title="Edit">Edit</a> |
+                    <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-route-id="@item.Id" title="Details">Details</a> |
+                    <button class="btn btn-sm btn-outline-danger deleteBtn" type="button"  data-id="@item.Id" title="Delete">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* <script>
+    $(document).on("click",".deleteBtn", function(){
+        var id = $(this).data("id");
+
+        if(!confirm("Are you sure you want to delete record?")){
+        return;
+        }
+
+        $.ajax({
+            url: '/Products/Delete?id='+id,
+            type: "DELETE",
+            success: function(response){
+                alert(response);
+
+                location.reload();
+            },
+            error:function(err){
+                alert("Error:" + err.responseText);
+            }
+        });
+    });
+</script> *@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on("click", ".deleteBtn", function () {
+
+        var button = $(this);
+        var id = button.data("id");
+        var row = button.closest("tr");
+
+        if (!confirm("Are you sure you want to delete record?")) {
+            return;
+        }
+
+        $.ajax({
+            url: '/Products/Delete/' + id,   // REST style URL
+            type: "DELETE",
+            success: function (response) {
+
+                alert(response);
+
+                // remove row without reload
+                row.fadeOut(500, function () {
+                    $(this).remove();
+                });
+
+            },
+            error: function (err) {
+                alert("Error: " + err.responseText);
+            }
+        });
+    });
+</script>

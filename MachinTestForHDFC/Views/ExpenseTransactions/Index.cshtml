@@ -1,0 +1,120 @@
+﻿@model IEnumerable<MachinTestForHDFC.Dto.ExpenseDto.GetExpenseTransactionDetailsDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="InsertExpenseTransactionDetails">Create New</a>
+</p>
+
+<!-- ===================== SEARCH + PAGE SIZE + PAGINATION ROW ===================== -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <!-- LEFT SIDE -->
+    <div class="d-flex">
+
+        <!-- SEARCH TEXT -->
+        <input type="text"
+               id="searchText"
+               class="form-control me-2"
+               placeholder="Search..."
+               style="width:250px;" />
+
+        <!-- SEARCH BUTTON -->
+        <button class="btn btn-primary me-2" id="btnSearch">
+            Search
+        </button>
+
+        <!-- PAGE SIZE DROPDOWN -->
+        <select id="pageSize" class="form-select" style="width:100px;">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
+
+    </div>
+
+    <!-- RIGHT SIDE PAGINATION -->
+    <div>
+        <ul class="pagination mb-0" id="pagination"></ul>
+    </div>
+
+</div>
+
+
+<!-- ===================== TABLE ===================== -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.EmployeeName)</th>
+            <th>@Html.DisplayNameFor(model => model.CategoryName)</th>
+            <th>@Html.DisplayNameFor(model => model.FromDate)</th>
+            <th>@Html.DisplayNameFor(model => model.ToDate)</th>
+            <th>@Html.DisplayNameFor(model => model.ExpenseAmount)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <!-- IMPORTANT: tbody will be filled by AJAX -->
+    <tbody id="expenseTableBody"></tbody>
+
+</table>
+
+
+
+<!-- ===================== STATUS MODAL ===================== -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Update Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" id="expenseId" />
+
+                <div class="mb-3">
+                    <label>Status</label>
+                    <select id="statusDropdown" class="form-select">
+                        <option value="A">Approve</option>
+                        <option value="R">Reject</option>
+                        <option value="P">Pending</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Remark</label>
+                    <textarea id="remark" class="form-control" rows="4"></textarea>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-success" id="btnSubmitStatus">Submit</button>
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    <!-- Page Specific JS -->
+    <script src="~/js/expense/expenseIndexPage.js" asp-append-version="true"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

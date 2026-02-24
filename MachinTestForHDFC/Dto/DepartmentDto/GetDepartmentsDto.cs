@@ -1,4 +1,4 @@
-﻿namespace MachinTestForHDFC.Dtos
+﻿namespace MachinTestForHDFC.Dto.DepartmentDto
 {
     public class GetDepartmentsDto
     {

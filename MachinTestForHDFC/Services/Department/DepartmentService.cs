@@ -1,5 +1,5 @@
 ﻿using MachinTestForHDFC.Database;
-using MachinTestForHDFC.Dtos;
+using MachinTestForHDFC.Dto.DepartmentDto;
 using Microsoft.EntityFrameworkCore;
 
 namespace MachinTestForHDFC.Services.Department

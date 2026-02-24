@@ -1,6 +1,6 @@
-﻿namespace MachinTestForHDFC.Dtos
+﻿namespace MachinTestForHDFC.Dto.EmployeeDto
 {
-    public class CreateEmployeeRequestDto
+    public class UpdateEmployeeRequestDto
     {
         public string FullName { get; set; } = string.Empty;
         public int EmpCode { get; set; }

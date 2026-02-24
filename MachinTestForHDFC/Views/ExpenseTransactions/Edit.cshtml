@@ -1,0 +1,112 @@
+﻿@model MachinTestForHDFC.Dto.ExpenseDto.GetExpenseTransactionById
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@* <h1>Edit</h1> *@
+
+<h4>Update Expense Transactions Requests Details</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select id="EmployeeId" name="EmployeeId" data-selected="@Model.EmployeeId" class="form-control">
+                    <option value="">---Select Employee---</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select id="CategoryId" name="CategoryId" data-selected="@Model.CategoryId" class="form-control">
+                    <option value="">---Select Category---</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpenseAmount" class="control-label"></label>
+                <input asp-for="ExpenseAmount" class="form-control" />
+                <span asp-validation-for="ExpenseAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FromDate" class="control-label"></label>
+                <input asp-for="FromDate" type="date" class="form-control" />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToDate" class="control-label"></label>
+                <input asp-for="ToDate" type="date" class="form-control" />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function(){
+            var selectedEmployeeId = $("#EmployeeId").data('selected');
+            var selectedCategoryId = $("#CategoryId").data('selected');
+
+            loadEmployeeDropdown(selectedEmployeeId);
+            loadCategoryDropdown(selectedCategoryId);
+        })
+
+        function loadEmployeeDropdown(selectedEmployeeId){
+            $.get('/ExpenseTransactions/GetAllEmployees', function(data){
+                var dropdown = $("#EmployeeId");
+                dropdown.empty();
+
+                dropdown.append('<option value="">--Select Employee--</option>');
+
+                $.each(data, function(i, item){
+                    dropdown.append(
+                        $('<option>',{
+                            value: item.id,
+                            text: item.fullName,
+                            selected: item.id == selectedEmployeeId
+                        })
+                    );
+                });
+            })
+        }
+
+        function loadCategoryDropdown(selectedCategoryId){
+            $.get('/ExpenseTransactions/GetAllCategories', function(data){
+                var dropdown = $("#CategoryId");
+                dropdown.empty();
+
+                dropdown.append('<option value="">--Select Category--</option>');
+
+                $.each(data, function(i, item){
+                    dropdown.append(
+                        $('<option>',{
+                            value: item.id,
+                            text: item.categoryName,
+                            selected: item.id == selectedCategoryId
+                        })
+                    );
+                });
+            })
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

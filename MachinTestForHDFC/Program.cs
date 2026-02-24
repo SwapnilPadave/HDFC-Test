@@ -1,22 +1,13 @@
-using MachinTestForHDFC.Database;
-using MachinTestForHDFC.Services.CountryStateCity;
-using MachinTestForHDFC.Services.Department;
-using MachinTestForHDFC.Services.Employee;
-using Microsoft.EntityFrameworkCore;
+using PBA.Api.Infra.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<TestDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"));
-});
-
-builder.Services.AddTransient<IEmployeeService, EmployeeService>();
-builder.Services.AddTransient<IDepartmentService, DepartmentService>();
-builder.Services.AddTransient<ICountryStateCityService, CountryStateCityService>();
+builder.Services.RegisterServices();
+builder.Services.ConfigureDatabase(builder.Configuration);
 
 var app = builder.Build();
 

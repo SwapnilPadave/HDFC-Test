@@ -1,5 +1,5 @@
 ﻿using MachinTestForHDFC.Database;
-using MachinTestForHDFC.Dtos;
+using MachinTestForHDFC.Dto.EmployeeDto;
 using MachinTestForHDFC.Services.Employee;
 using Microsoft.AspNetCore.Mvc;
 

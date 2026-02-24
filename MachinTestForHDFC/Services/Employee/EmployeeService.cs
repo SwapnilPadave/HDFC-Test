@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using MachinTestForHDFC.Database;
-using MachinTestForHDFC.Dtos;
+using MachinTestForHDFC.Dto.EmployeeDto;
 using MachinTestForHDFC.Models.Employee;
 using MachinTestForHDFC.ResponseModels;
 using Microsoft.EntityFrameworkCore;

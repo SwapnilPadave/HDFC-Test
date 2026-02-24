@@ -1,0 +1,108 @@
+﻿@model MachinTestForHDFC.Dto.ExpenseDto.GetExpenseTransactionRequestDetailsDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@* <h1>Details</h1> *@
+
+<div>
+    <h4>Expense Transaction Request Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Employee Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeName)
+        </dd>
+        <dt class="col-sm-2">
+            Category Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+        <dt class="col-sm-2">
+            Expense Amount
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpenseAmount)
+        </dd>
+        <dt class="col-sm-2">
+            From Date
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.FromDate?.ToString("dd-MM-yyyy"))
+        </dd>
+        <dt class="col-sm-2">
+            To Date
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.ToDate?.ToString("dd-MM-yyyy"))
+        </dd>
+        <dt class="col-sm-2">
+            Applied Date
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.AppliedDate?.ToString("dd-MM-yyyy"))
+        </dd>
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            @if(@Model.Status == "Approved")
+            {
+                <span class="text-success fw-bold">@Model.Status</span>
+            }
+            else if(@Model.Status == "Rejected")
+            {
+                <span class="text-danger fw-bold">@Model.Status</span>
+            }
+            else
+            {
+                <span class="text-primary fw-bold">@Model.Status</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Action Taken By
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ActionBy)
+        </dd>
+        <dt class="col-sm-2">
+            Action Date
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.ActionDate?.ToString("dd-MM-yyyy"))
+        </dd>
+        <dt class="col-sm-2">
+            Remark
+        </dt>
+        <dd class="col-sm-10 fw-bold">
+            @Html.DisplayFor(model => model.Remark)
+        </dd>
+        <dt class="col-sm-2">
+            Active Status
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.IsActive)
+            {
+                <span class="text-success fw-bold">Active</span>
+            }
+            else
+            {
+                <span class="text-danger fw-bold">Inactive</span>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
