@@ -258,6 +258,37 @@ namespace MachinTestForHDFC.Services.Employee
             return isExists;
         }
 
+        public async Task<ServiceResult> CreateEmployeeByUrlAsync(AddEmployeeViewModel model)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var data = new TestEmployeeDetails
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    MobileNo = model.MobileNo,
+                    Address = model.Address,
+                    DepartmentId = model.DepartmentId,
+                    CountryId = model.CountryId,
+                    StateId = model.StateId,
+                    CityId = model.CityId,
+                    IsActive = true
+                };
+
+                await _context.TestEmployeeDetails.AddAsync(data);
+                await _context.SaveChangesAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResult
+                {
+                    Errors = new List<(string Field, string Message)> { ("Error while creating employee: ", ex.Message) }
+                };
+            }
+        }
+
         private decimal CalculateSalaryTax(decimal salary)
         {
             decimal totalTaxDeduction = 0;

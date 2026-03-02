@@ -50,6 +50,43 @@ function bindTableData(data) {
     $.each(data, function (i, item) {
         let statusColor = item.status === "Approved" ? "green" : item.status === "Pending" ? "blue" : "red";
 
+        let actionButtons = `
+            <button class="btn btn-sm btn-outline-primary btnUpdateStatus"
+                            data-id="${item.id}"
+                            data-currentstatus="${item.status}" title="Update Status">
+                        Update Status
+                    </button>
+        `;
+
+        if (item.isActive) {
+            actionButtons += `
+                | <a href="/ExpenseTransactions/Edit/${item.id}"
+                     class="btn btn-sm btn-outline-warning" title="Edit">
+                     Edit
+                  </a>
+
+                | <a href="/ExpenseTransactions/Details/${item.id}"
+                     class="btn btn-sm btn-outline-info" title="View">
+                     View
+                  </a>
+
+                | <a href="/ExpenseTransactions/Delete/${item.id}"
+                     class="btn btn-sm btn-outline-danger" title="Delete">
+                     Delete
+                  </a>
+            `;
+        }
+        else {
+            // Optional: Only Details when inactive
+            actionButtons += `
+                | <a href="/ExpenseTransactions/Details/${item.id}"
+                     class="btn btn-sm btn-outline-info" title="View">
+                     View
+                  </a>
+            `;
+        }
+
+
         rows += `
                 <tr>
                 <td>${item.employeeName}</td>
@@ -59,29 +96,11 @@ function bindTableData(data) {
                 <td>${item.expenseAmount}</td>
                 <td><span style="color:${statusColor}">${item.status}</span></td>
                 <td>${item.description ?? ""}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary btnUpdateStatus"
-                            data-id="${item.id}"
-                            data-currentstatus="${item.status}">
-                        Update Status
-                    </button> |
-                    <a href="/ExpenseTransactions/Edit/${item.id}"
-                       class="btn btn-sm btn-outline-warning">
-                       Edit
-                    </a>
-                    |
-                    <a href="/ExpenseTransactions/Details/${item.id}"
-                       class="btn btn-sm btn-outline-info">
-                       Details
-                    </a>
-                    |
-                    <a href="/ExpenseTransactions/Delete/${item.id}"
-                       class="btn btn-sm btn-outline-danger">
-                       Delete
-                    </a>
-                </td>
+                <td>${actionButtons}</td>
             </tr>        
         `;
+
+        actionButtons = "";
     });
 
     $("#expenseTableBody").html(rows);

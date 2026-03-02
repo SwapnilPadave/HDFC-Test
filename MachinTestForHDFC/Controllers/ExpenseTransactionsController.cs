@@ -53,7 +53,7 @@ namespace MachinTestForHDFC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetExpenseTransactionData(string? searchText, int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> GetExpenseTransactionData(string? searchText, int pageNumber, int pageSize)
         {
             var result = await _expenseTransactionService.GetAllExpenseTransactionRequestDetailsAsync(searchText, pageNumber, pageSize);
             return Json(result);

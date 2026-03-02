@@ -112,7 +112,8 @@ namespace MachinTestForHDFC.Services.Expenses
                             exp.FromDate,
                             exp.ToDate,
                             exp.Status,
-                            exp.Description
+                            exp.Description,
+                            exp.IsActive
                         };
 
             if (!string.IsNullOrWhiteSpace(searchText))
@@ -139,7 +140,8 @@ namespace MachinTestForHDFC.Services.Expenses
                     ToDate = x.ToDate,
                     Status = x.Status == 'P' ? "Pending" :
                              x.Status == 'A' ? "Approved" : "Rejected",
-                    Description = x.Description
+                    Description = x.Description,
+                    IsActive = x.IsActive
                 })
                 .ToListAsync();
 

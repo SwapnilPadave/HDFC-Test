@@ -29,5 +29,7 @@ namespace MachinTestForHDFC.Database
         public DbSet<ExpenseTransactionsRequestsDetails> ExpenseTransactionsRequestsDetails { get; set; }
         public DbSet<MachinTestForHDFC.Dto.ExpenseDto.GetExpenseTransactionDetailsDto> GetExpenseTransactionDetailsDto { get; set; } = default!;
         public DbSet<MachinTestForHDFC.Dto.ExpenseDto.GetExpenseTransactionRequestDetailsDto> GetExpenseTransactionRequestDetailsDto { get; set; } = default!;
+
+        public DbSet<TestEmployeeDetails> TestEmployeeDetails { get; set; }
     }
 }

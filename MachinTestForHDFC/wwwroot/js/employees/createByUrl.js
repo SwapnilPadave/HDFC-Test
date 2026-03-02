@@ -107,7 +107,7 @@ function loadCountryDropdown(selectedCountryId, selectedStateId, selectedCityId)
 //Function to load state dropdown
 function loadStateDropdown(selectedCountryId, selectedStateId, selectedCityId) {
     $.get('/CountryStateCity/GetAllStateByCountryId', { countryId: selectedCountryId }, function (data) {
-    //$.get('/CountryStateCity/GetAllStates', { countryId: selectedCountryId }, function (data) {
+        //$.get('/CountryStateCity/GetAllStates', { countryId: selectedCountryId }, function (data) {
         var dropdown = $("#StateId");
         dropdown.empty();
 

@@ -13,5 +13,6 @@ namespace MachinTestForHDFC.Services.Employee
         decimal CalculateTax(decimal salary);
         Task<int> GenerateEmployeeCodeAsync();
         Task<bool> CheckDuplicateEmpCodeAsync(int empCode, int? id);
+        Task<ServiceResult> CreateEmployeeByUrlAsync(AddEmployeeViewModel model);
     }
 }

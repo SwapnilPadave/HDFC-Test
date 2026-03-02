@@ -9,7 +9,8 @@
         public DateTime? ToDate { get; set; }
         public decimal ExpenseAmount { get; set; }
         public string Status { get; set; } = string.Empty;
-        public string Description {  get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
     }
 
     public class GetExpenseTransactionById
